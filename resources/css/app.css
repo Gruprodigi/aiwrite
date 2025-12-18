@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+}
+
+@layer utilities {
+    .bg-user {
+        background: #f7f9ff;
+    }
+
+    .custom-shadow {
+        box-shadow: 0 0 20px #ddd;
+    }
+    .font-sans {
+        font-family: 'Open Sans', sans-serif;
+    }
+    .border-12 {
+        border-width: 16px;
+    }
+
+    .min-w-48 {
+        min-width: 128px;
+    }
+
+    .py-custom {
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    .min-sidebar-custom-height {
+        height: calc(100vh - 65px) !important;
+    }
+
+    .custom-editor-size {
+        height: calc(100vh - 180px) !important;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+    }
+
+    .min-document-custom-height {
+        height: calc(100vh - 125px) !important;
+    }
+
+    .filter-invert {
+        filter: invert(100%);
+    }
+
+    .ql-editor {
+        height: calc(100vh - 180px) !important;
+    }
+
+}

@@ -1,0 +1,1 @@
+<a href="javascript:void(0)" wire:click="download('{{ $path }}', '{{ $order_id }}')">{{ __('Download Item') }}</a>

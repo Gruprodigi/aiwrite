@@ -1,0 +1,23 @@
+.ql-container.ql-snow {
+    border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+    border: none !important;
+    border-bottom: 1px solid #ddd !important;
+    padding: 13px 16px !important;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: white;
+}
+
+
+.ql-editor {
+    padding: 30px 150px !important;
+}
+
+.ql-container.ql-snow p {
+    font-size: 18px !important;
+    color: #5d5a5a !important;
+}
