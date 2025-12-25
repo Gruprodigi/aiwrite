@@ -1,4 +1,4 @@
-import { BarChart3, Users, FileText, CreditCard, Settings, LogOut, Zap, TrendingUp, ChevronDown, BookOpen, Layers, Menu } from "lucide-react";
+import { BarChart3, Users, FileText, CreditCard, Settings, LogOut, Zap, TrendingUp, ChevronDown, BookOpen, Layers, Menu, Image, Mail, Globe } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
 
@@ -58,10 +58,37 @@ const menuItems: MenuSection[] = [
     href: "/admin/menus",
   },
   {
+    icon: Image,
+    label: "Biblioteca de Mídia",
+    href: "/admin/media",
+  },
+  {
+    icon: Mail,
+    label: "Templates de Email",
+    submenu: [
+      { label: "Lista", href: "/admin/templates" },
+      { label: "Criar", href: "/admin/templates/create" },
+    ],
+  },
+  {
+    icon: Globe,
+    label: "Idiomas",
+    submenu: [
+      { label: "Lista", href: "/admin/languages" },
+      { label: "Criar", href: "/admin/languages/create" },
+    ],
+  },
+  {
     icon: Settings,
     label: "Configurações",
     submenu: [
-      { label: "Pagamentos", href: "/admin/settings/payment" },
+      { label: "Geral", href: "/admin/settings/general" },
+      { label: "SEO", href: "/admin/settings/seo" },
+      { label: "Email", href: "/admin/settings/email" },
+      { label: "Gateways de Pagamento", href: "/admin/settings/payment" },
+      { label: "IA", href: "/admin/settings/ai" },
+      { label: "Aparência", href: "/admin/settings/appearance" },
+      { label: "Avançado", href: "/admin/settings/advanced" },
       { label: "Histórico de Pagamentos", href: "/admin/settings/payment-history" },
     ],
   },

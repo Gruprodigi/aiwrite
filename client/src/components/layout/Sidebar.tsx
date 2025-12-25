@@ -18,6 +18,7 @@ const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/user/dashboard" },
   { icon: FileText, label: "Documentos", href: "/user/documents" },
   { icon: LayoutTemplate, label: "Templates", href: "/user/templates" },
+  { icon: CreditCard, label: "Assinaturas", href: "/user/subscription" },
   { icon: User, label: "Perfil", href: "/user/profile" },
   { icon: CreditCard, label: "Planos", href: "/user/plans" },
   { icon: Settings, label: "Configurações", href: "/user/settings" },

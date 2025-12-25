@@ -16,10 +16,11 @@ import Profile from "@/pages/user/Profile";
 import Account from "@/pages/user/Account";
 import History from "@/pages/user/History";
 import Settings from "@/pages/user/Settings";
+import Documents from "@/pages/user/Documents";
+import Subscription from "@/pages/user/Subscription";
 import PaymentSuccess from "@/pages/payment/Success";
 import PaymentFailed from "@/pages/payment/Failed";
 import PaymentSelect from "@/pages/payment/SelectPayment";
-import PaymentHistory from "@/pages/payment/PaymentHistory";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AnalyticsOverview from "@/pages/admin/analytics/Overview";
 import AnalyticsUsers from "@/pages/admin/analytics/Users";
@@ -32,7 +33,7 @@ import UserView from "@/pages/admin/users/UserView";
 import PlansList from "@/pages/admin/plans/PlansList";
 import PlanCreate from "@/pages/admin/plans/PlanCreate";
 import PlanEdit from "@/pages/admin/plans/PlanEdit";
-import AdminPaymentSettings from "@/pages/admin/settings/Payment";
+import PaymentGateways from "@/pages/admin/settings/PaymentGateways";
 import AdminPaymentHistory from "@/pages/admin/settings/PaymentHistory";
 import TransactionsList from "@/pages/admin/transactions/TransactionsList";
 import TransactionDetail from "@/pages/admin/transactions/TransactionDetail";
@@ -44,6 +45,19 @@ import PagesList from "@/pages/admin/pages/PagesList";
 import PageForm from "@/pages/admin/pages/PageForm";
 import MenusList from "@/pages/admin/menus/MenusList";
 import MenuBuilder from "@/pages/admin/menus/MenuBuilder";
+import MediaList from "@/pages/admin/media/MediaList";
+import TemplatesList from "@/pages/admin/templates/TemplatesList";
+import TemplateCreate from "@/pages/admin/templates/TemplateCreate";
+import TemplateEdit from "@/pages/admin/templates/TemplateEdit";
+import LanguagesList from "@/pages/admin/languages/LanguagesList";
+import LanguageCreate from "@/pages/admin/languages/LanguageCreate";
+import LanguageEdit from "@/pages/admin/languages/LanguageEdit";
+import GeneralSettings from "@/pages/admin/settings/General";
+import SEOSettings from "@/pages/admin/settings/SEO";
+import EmailSettings from "@/pages/admin/settings/Email";
+import AISettings from "@/pages/admin/settings/AISettings";
+import AppearanceSettings from "@/pages/admin/settings/Appearance";
+import AdvancedSettings from "@/pages/admin/settings/Advanced";
 
 const PlaceholderPage = ({ title }: { title: string }) => (
   <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -74,12 +88,13 @@ function Router() {
       <Route path="/user/settings" component={Settings} />
       <Route path="/user/plans" component={Plans} />
       <Route path="/user/history" component={History} />
+      <Route path="/user/documents" component={Documents} />
+      <Route path="/user/subscription" component={Subscription} />
 
       {/* Payment Routes */}
       <Route path="/payment/select" component={PaymentSelect} />
       <Route path="/payment/success" component={PaymentSuccess} />
       <Route path="/payment/failed" component={PaymentFailed} />
-      <Route path="/payment/history" component={PaymentHistory} />
 
       {/* Admin Routes */}
       <Route path="/admin/dashboard" component={AdminDashboard} />
@@ -100,7 +115,13 @@ function Router() {
       <Route path="/admin/plans/:id/edit" component={PlanEdit} />
       
       {/* Admin Settings Routes */}
-      <Route path="/admin/settings/payment" component={AdminPaymentSettings} />
+      <Route path="/admin/settings/general" component={GeneralSettings} />
+      <Route path="/admin/settings/seo" component={SEOSettings} />
+      <Route path="/admin/settings/email" component={EmailSettings} />
+      <Route path="/admin/settings/payment" component={PaymentGateways} />
+      <Route path="/admin/settings/ai" component={AISettings} />
+      <Route path="/admin/settings/appearance" component={AppearanceSettings} />
+      <Route path="/admin/settings/advanced" component={AdvancedSettings} />
       <Route path="/admin/settings/payment-history" component={AdminPaymentHistory} />
       
       {/* Admin Transactions Routes */}
@@ -122,6 +143,19 @@ function Router() {
       {/* Admin Menus Routes */}
       <Route path="/admin/menus" component={MenusList} />
       <Route path="/admin/menus/:id/edit" component={MenuBuilder} />
+      
+      {/* Admin Media Routes */}
+      <Route path="/admin/media" component={MediaList} />
+      
+      {/* Admin Templates Routes */}
+      <Route path="/admin/templates" component={TemplatesList} />
+      <Route path="/admin/templates/create" component={TemplateCreate} />
+      <Route path="/admin/templates/:id/edit" component={TemplateEdit} />
+      
+      {/* Admin Languages Routes */}
+      <Route path="/admin/languages" component={LanguagesList} />
+      <Route path="/admin/languages/create" component={LanguageCreate} />
+      <Route path="/admin/languages/:id/edit" component={LanguageEdit} />
       
       <Route component={NotFound} />
     </Switch>
