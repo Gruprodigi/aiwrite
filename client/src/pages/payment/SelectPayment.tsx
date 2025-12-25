@@ -2,16 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ChevronLeft, Copy, Check } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Link, useRoute } from "wouter";
 import { useState } from "react";
 
 export default function SelectPayment() {
   const [match, params] = useRoute("/payment/select/:planId");
-  const [paymentMethod, setPaymentMethod] = useState("stripe");
-  const [copied, setCopied] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("mercadopago");
 
   const planNames: Record<string, string> = {
     "1": "Free",
@@ -29,11 +27,6 @@ export default function SelectPayment() {
   const planName = planNames[planId] || "Professional";
   const planPrice = planPrices[planId] || "R$ 49,90/mês";
 
-  const handleCopyPix = () => {
-    navigator.clipboard.writeText("00020126580014br.gov.bcb.pix0136550e8422-73ee-46a0-a8d5-b5cd50d3f03552040000530398654061234.565802BR5913JOHN DOE6009SAO PAULO62410503***63041D3D");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -86,15 +79,15 @@ export default function SelectPayment() {
                 </Label>
               </div>
 
-              {/* PIX */}
-              <div className={`flex items-center gap-4 p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'pix' ? 'border-primary bg-primary/5' : 'border-gray-200 hover:bg-gray-50'}`}>
-                <RadioGroupItem value="pix" id="pix" />
-                <Label htmlFor="pix" className="cursor-pointer flex-1">
+              {/* Mercado Pago */}
+              <div className={`flex items-center gap-4 p-4 border rounded-lg cursor-pointer transition-colors ${paymentMethod === 'mercadopago' ? 'border-primary bg-primary/5' : 'border-gray-200 hover:bg-gray-50'}`}>
+                <RadioGroupItem value="mercadopago" id="mercadopago" />
+                <Label htmlFor="mercadopago" className="cursor-pointer flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl">🔷</span>
+                    <span className="text-2xl">💳</span>
                     <div>
-                      <p className="font-medium text-gray-900">PIX</p>
-                      <p className="text-xs text-gray-500">Transferência instantânea</p>
+                      <p className="font-medium text-gray-900">Mercado Pago</p>
+                      <p className="text-xs text-gray-500">Cartão, débito ou saldo</p>
                     </div>
                   </div>
                 </Label>
@@ -160,56 +153,24 @@ export default function SelectPayment() {
           </Card>
         )}
 
-        {/* Payment Form - PIX */}
-        {paymentMethod === 'pix' && (
+        {/* Payment Form - Mercado Pago */}
+        {paymentMethod === 'mercadopago' && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Pagamento via PIX</CardTitle>
-              <CardDescription>Escaneie o QR Code ou copie a chave PIX</CardDescription>
+              <CardTitle className="text-lg">Pagamento via Mercado Pago</CardTitle>
+              <CardDescription>Escolha a melhor forma de pagamento para você</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex justify-center">
-                <div className="w-48 h-48 bg-white border-4 border-gray-300 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-500 mb-2">QR Code</p>
-                    <div className="w-40 h-40 bg-gradient-to-br from-gray-200 to-gray-300 rounded flex items-center justify-center">
-                      <span className="text-gray-400 text-xs">▓▓▓▓▓▓▓▓▓▓</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2">
-                <Label>Chave PIX (Copiar)</Label>
-                <div className="flex gap-2">
-                  <Input 
-                    value="00020126580014br.gov.bcb.pix..." 
-                    readOnly 
-                    className="bg-gray-50 text-xs font-mono"
-                  />
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={handleCopyPix}
-                    className="shrink-0"
-                  >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-800">
-                  <strong>Status:</strong> Aguardando pagamento... A transação pode levar alguns minutos para ser confirmada.
+            <CardContent className="space-y-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p className="text-sm text-yellow-800">
+                  Ao clicar no botão abaixo, você será levado para a plataforma segura do Mercado Pago onde poderá escolher entre cartão, débito, boleto, Pix e mais.
                 </p>
               </div>
             </CardContent>
             <CardFooter>
               <Link href="/payment/success" className="w-full">
                 <Button className="w-full bg-primary hover:bg-primary/90 text-white h-11">
-                  Já Paguei
+                  Pagar com Mercado Pago
                 </Button>
               </Link>
             </CardFooter>

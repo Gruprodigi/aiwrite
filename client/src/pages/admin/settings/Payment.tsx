@@ -3,13 +3,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import { CreditCard, Copy, Check, Link2 } from "lucide-react";
+import { CreditCard, Link2 } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Payment() {
-  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "pix" | "paypal">("stripe");
+  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "mercadopago" | "paypal">("stripe");
   const [cardData, setCardData] = useState({
     number: "",
     holderName: "",
@@ -17,7 +16,6 @@ export default function Payment() {
     expiryYear: "",
     cvv: "",
   });
-  const [copied, setCopied] = useState(false);
 
   const handleCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,11 +35,6 @@ export default function Payment() {
     });
   };
 
-  const handleCopyPix = () => {
-    navigator.clipboard.writeText("00020126580014br.gov.bcb.pix0136a1b2c3d4-e5f6-7890-1234-567890abcdef5204000053039865802BR5913WRITER AI6009SAO PAULO62410503***63041D3F");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <AdminLayout title="Pagamento">
@@ -78,29 +71,29 @@ export default function Payment() {
               </div>
             </div>
 
-            {/* PIX */}
+            {/* Mercado Pago */}
             <div
               className={`p-4 rounded-lg border-2 mb-4 cursor-pointer transition-all ${
-                paymentMethod === "pix"
+                paymentMethod === "mercadopago"
                   ? "border-primary bg-primary/5"
                   : "border-[#e2e8f0] hover:border-[#cbd5e1]"
               }`}
-              onClick={() => setPaymentMethod("pix")}
+              onClick={() => setPaymentMethod("mercadopago")}
             >
               <div className="flex items-center gap-3">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    paymentMethod === "pix" ? "border-primary" : "border-[#cbd5e1]"
+                    paymentMethod === "mercadopago" ? "border-primary" : "border-[#cbd5e1]"
                   }`}
                 >
-                  {paymentMethod === "pix" && (
+                  {paymentMethod === "mercadopago" && (
                     <div className="w-2 h-2 bg-primary rounded-full" />
                   )}
                 </div>
-                <span className="text-xl">🟦</span>
+                <span className="text-xl">💳</span>
                 <div>
-                  <p className="font-semibold text-[#1e293b]">PIX (Transferência Instantânea)</p>
-                  <p className="text-sm text-[#64748b]">QR Code ou chave PIX</p>
+                  <p className="font-semibold text-[#1e293b]">Mercado Pago</p>
+                  <p className="text-sm text-[#64748b]">Cartão, débito, boleto, Pix</p>
                 </div>
               </div>
             </div>
@@ -209,51 +202,26 @@ export default function Payment() {
             </Card>
           )}
 
-          {/* PIX Payment */}
-          {paymentMethod === "pix" && (
+          {/* Mercado Pago Payment */}
+          {paymentMethod === "mercadopago" && (
             <Card className="p-6">
-              <h3 className="text-lg font-bold text-[#1e293b] mb-6">Escaneie o QR Code ou copie a chave</h3>
+              <h3 className="text-lg font-bold text-[#1e293b] mb-6">Prosseguir com Mercado Pago</h3>
               <div className="space-y-6">
-                {/* QR Code Mock */}
-                <div className="flex justify-center">
-                  <div className="w-48 h-48 bg-[#f8f9fa] border-2 border-[#e2e8f0] rounded-lg flex items-center justify-center text-[#64748b]">
-                    <div className="text-center">
-                      <div className="text-4xl mb-2">🟫🟪🟫</div>
-                      <div className="text-4xl mb-2">🟫⬜🟫</div>
-                      <div className="text-4xl">🟫🟪🟫</div>
-                      <p className="text-xs mt-4">QR Code</p>
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <Label>Chave PIX Aleatória</Label>
-                  <div className="flex gap-2 mt-1">
-                    <Input
-                      value="00020126580014br.gov.bcb.pix0136a1b2c3d4-e5f6-7890-1234-567890abcdef5204000053039865802BR5913WRITER AI6009SAO PAULO62410503***63041D3F"
-                      readOnly
-                      className="font-mono text-xs"
-                    />
-                    <Button
-                      onClick={handleCopyPix}
-                      variant="outline"
-                      className="border-[#e2e8f0]"
-                    >
-                      {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    ✓ Após escanear o QR Code ou usar a chave, sua transação será processada em segundos.
+                <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-sm text-[#1e293b] mb-4">
+                    Você será redirecionado para a plataforma segura do Mercado Pago, onde poderá escolher a melhor forma de pagamento:
                   </p>
+                  <div className="space-y-2 text-sm">
+                    <p>✓ Cartão de crédito e débito</p>
+                    <p>✓ PIX (transferência instantânea)</p>
+                    <p>✓ Boleto bancário</p>
+                    <p>✓ Dinheiro na conta Mercado Pago</p>
+                    <p>✓ Proteção do comprador</p>
+                  </div>
                 </div>
 
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white">
-                  Confirmar Pagamento PIX
+                <Button className="w-full bg-primary hover:bg-primary/90 text-white h-12 font-semibold">
+                  Pagar com Mercado Pago
                 </Button>
               </div>
             </Card>
