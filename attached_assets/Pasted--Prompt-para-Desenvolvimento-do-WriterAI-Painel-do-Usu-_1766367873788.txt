@@ -1,0 +1,900 @@
+# Prompt para Desenvolvimento do WriterAI - Painel do Usuário
+
+Preciso que você desenvolva o **painel do usuário completo** de uma plataforma SaaS de geração de conteúdo com IA chamada WriterAI. Vamos usar **Node.js, React 18, Vite e Tailwind CSS**.
+
+## 🎯 Objetivo Principal
+
+Criar uma aplicação web completa e funcional do painel do usuário, com todas as páginas, componentes e funcionalidades descritas abaixo.
+
+## 🛠️ Stack Tecnológica
+
+```
+- Frontend: React 18 + Vite
+- Styling: Tailwind CSS
+- Roteamento: React Router v6
+- State Management: Context API + Hooks
+- Formulários: React Hook Form
+- HTTP Client: Axios
+- Editor de Texto: Tiptap ou Lexical
+- Ícones: Lucide React
+- Animações: Framer Motion (opcional)
+```
+
+## 🎨 Design System
+
+### Paleta de Cores
+```
+Primary: #667eea (Roxo)
+Secondary: #764ba2 (Roxo escuro)
+Success: #28a745
+Danger: #f93e3e
+Warning: #ffc107
+Info: #61affe
+Background: #f5f5f5
+Text: #333333
+```
+
+### Tipografia
+```
+Font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+H1: 2.5rem, bold
+H2: 2rem, bold
+H3: 1.5rem, bold
+Body: 1rem, regular
+```
+
+## 📁 Estrutura do Projeto
+
+```
+writerAI-frontend/
+├── src/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Header.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── Footer.jsx
+│   │   ├── forms/
+│   │   │   ├── TextInput.jsx
+│   │   │   ├── Textarea.jsx
+│   │   │   ├── Select.jsx
+│   │   │   └── FileInput.jsx
+│   │   ├── buttons/
+│   │   │   ├── PrimaryButton.jsx
+│   │   │   ├── SecondaryButton.jsx
+│   │   │   └── DangerButton.jsx
+│   │   ├── cards/
+│   │   │   ├── DocumentCard.jsx
+│   │   │   ├── PlanCard.jsx
+│   │   │   └── StatCard.jsx
+│   │   ├── modals/
+│   │   │   ├── ConfirmModal.jsx
+│   │   │   ├── NewDocumentModal.jsx
+│   │   │   └── RenameModal.jsx
+│   │   ├── editor/
+│   │   │   ├── RichTextEditor.jsx
+│   │   │   └── AIGeneratorPanel.jsx
+│   │   └── common/
+│   │       ├── Loading.jsx
+│   │       ├── Alert.jsx
+│   │       ├── Pagination.jsx
+│   │       └── SearchBar.jsx
+│   ├── pages/
+│   │   ├── auth/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   └── ResetPassword.jsx
+│   │   ├── user/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── DocumentEditor.jsx
+│   │   │   ├── Profile.jsx
+│   │   │   ├── Account.jsx
+│   │   │   ├── Plans.jsx
+│   │   │   ├── Templates.jsx
+│   │   │   ├── History.jsx
+│   │   │   └── Settings.jsx
+│   │   └── payment/
+│   │       ├── SelectPayment.jsx
+│   │       ├── PaymentHistory.jsx
+│   │       ├── Success.jsx
+│   │       └── Failed.jsx
+│   ├── contexts/
+│   │   ├── AuthContext.jsx
+│   │   ├── UserContext.jsx
+│   │   ├── DocumentContext.jsx
+│   │   └── UIContext.jsx
+│   ├── hooks/
+│   │   ├── useAuth.js
+│   │   ├── useApi.js
+│   │   ├── useForm.js
+│   │   └── useDocument.js
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── authService.js
+│   │   ├── documentService.js
+│   │   ├── userService.js
+│   │   └── planService.js
+│   ├── utils/
+│   │   ├── validators.js
+│   │   ├── formatters.js
+│   │   └── constants.js
+│   ├── App.jsx
+│   └── main.jsx
+├── public/
+├── package.json
+├── vite.config.js
+└── tailwind.config.js
+```
+
+## 📄 Páginas e Funcionalidades
+
+### 1. **Dashboard** (`/user/dashboard`)
+
+**Objetivo:** Página principal onde o usuário gerencia seus documentos.
+
+**Funcionalidades:**
+- Grid de documentos com cards exibindo:
+  - Nome do documento
+  - Data de criação
+  - Contagem de palavras
+  - Status (rascunho/publicado)
+  - Ícone de favorito
+- Botão "Novo Documento" (abre modal)
+- Filtros: Todos, Favoritos, Recentes
+- Barra de busca para filtrar documentos
+- Paginação (10 documentos por página)
+- Estatísticas no topo:
+  - Total de documentos
+  - Palavras usadas este mês
+  - Limite do plano
+  - Dias restantes do plano
+
+**Estado Mock (até integrar backend):**
+```javascript
+const mockDocuments = [
+  {
+    id: 1,
+    name: "Artigo sobre IA",
+    slug: "artigo-sobre-ia",
+    wordCount: 1250,
+    createdAt: "2025-12-15",
+    isFavorite: true,
+    status: "draft"
+  },
+  // ... mais documentos
+]
+```
+
+**Interações:**
+- Clicar no card: abre o editor
+- Botão favorito: toggle favorito
+- Menu "..." (três pontos): Renomear, Duplicar, Deletar
+- Busca: filtra documentos em tempo real
+
+---
+
+### 2. **Editor de Documento** (`/user/document/:id`)
+
+**Objetivo:** Editor completo com geração de conteúdo via IA.
+
+**Layout:**
+```
+┌─────────────────────────────────────────────┐
+│ Header: Logo | Título (editável) | Salvar  │
+├─────────────────────────────────────────────┤
+│ Toolbar: B I U | Link | H1 H2 | Lista      │
+├──────────────────────────────┬──────────────┤
+│                              │              │
+│   Editor de Texto            │   AI Panel   │
+│   (Tiptap/Lexical)           │              │
+│                              │   Tipo:      │
+│                              │   [ Gerar ]  │
+│                              │              │
+│                              │   Idioma:    │
+│                              │   [PT-BR ▼]  │
+│                              │              │
+│                              │   Tom:       │
+│                              │   [Select ▼] │
+│                              │              │
+│                              │   [Generate] │
+│                              │              │
+├──────────────────────────────┴──────────────┤
+│ Footer: 1,250 palavras | Auto-salvo 10:32  │
+└─────────────────────────────────────────────┘
+```
+
+**Funcionalidades do Editor:**
+- Formatação: Bold, Italic, Underline, Strike
+- Headings: H1, H2, H3
+- Listas: Ordenadas e não ordenadas
+- Links: Inserir e editar
+- Citações
+- Código inline
+- Undo/Redo
+- Contador de palavras em tempo real
+- Auto-save a cada 30 segundos
+
+**AI Generator Panel:**
+- **Tipo de Geração:**
+  - Gerar do zero
+  - Continuar escrevendo
+  - Reescrever seleção
+  - Resumir
+  - Traduzir
+  - Expandir ideias
+  - Melhorar gramática
+- **Idioma:** Dropdown com PT-BR, EN-US, ES, FR, etc
+- **Tom:** Profissional, Casual, Formal, Criativo, Técnico
+- **Prompt customizado:** Textarea para instruções específicas
+- Botão "Gerar"
+- Loading state durante geração
+- Inserir conteúdo gerado no cursor ou substituir seleção
+
+**Estado Mock:**
+```javascript
+const mockDocument = {
+  id: 1,
+  name: "Artigo sobre IA",
+  content: "<p>Conteúdo inicial...</p>",
+  wordCount: 1250,
+  lastSaved: "2025-12-18 10:30"
+}
+```
+
+---
+
+### 3. **Templates** (`/user/templates`)
+
+**Objetivo:** Galeria de templates prontos para geração rápida.
+
+**Funcionalidades:**
+- Grid de cards com templates:
+  - Artigo de Blog
+  - Post para Redes Sociais
+  - Email Marketing
+  - Descrição de Produto
+  - Script de Vídeo
+  - Carta de Apresentação
+  - Press Release
+  - FAQ
+- Cada card tem:
+  - Ícone
+  - Nome
+  - Descrição curta
+  - Botão "Usar Template"
+- Filtros por categoria
+- Busca por nome
+
+**Ao clicar "Usar Template":**
+- Abre modal com campos específicos do template
+- Exemplo (Artigo de Blog):
+  - Título do artigo
+  - Palavras-chave
+  - Público-alvo
+  - Tom
+- Gera documento baseado no template
+
+---
+
+### 4. **Perfil** (`/user/profile`)
+
+**Objetivo:** Gerenciar dados pessoais do usuário.
+
+**Seções:**
+
+**A. Informações Pessoais**
+- Foto de perfil (upload)
+- Nome completo
+- Email (não editável)
+- Telefone
+- Biografia curta
+- Botão "Salvar Alterações"
+
+**B. Alterar Senha**
+- Senha atual
+- Nova senha
+- Confirmar nova senha
+- Botão "Atualizar Senha"
+
+**C. Preferências**
+- Idioma padrão da interface
+- Idioma padrão de geração
+- Tom padrão
+- Notificações por email (toggles)
+  - Novidades do produto
+  - Dicas de uso
+  - Limite de palavras próximo
+
+**D. Zona de Perigo**
+- Botão "Deletar Conta" (vermelho)
+- Abre modal de confirmação com senha
+
+---
+
+### 5. **Conta** (`/user/account`)
+
+**Objetivo:** Visão geral da conta e uso.
+
+**Informações Exibidas:**
+- **Status do Plano:**
+  - Nome do plano atual
+  - Data de início
+  - Data de expiração
+  - Botão "Upgrade de Plano"
+  
+- **Uso de Recursos:**
+  - Barra de progresso: Palavras usadas / Limite
+  - Documentos criados este mês
+  - Gerações de IA este mês
+  
+- **Histórico Recente:**
+  - Últimas 5 atividades (documento criado, IA usada, etc)
+
+---
+
+### 6. **Planos** (`/user/plans`)
+
+**Objetivo:** Escolher ou fazer upgrade de plano.
+
+**Layout:**
+- Grid com 3 colunas (Free, Pro, Enterprise)
+- Cada card de plano contém:
+  - Nome
+  - Preço/mês ou /ano
+  - Toggle Monthly/Yearly (desconto anual)
+  - Lista de features:
+    - X palavras/mês
+    - Y documentos
+    - Suporte prioritário (se aplicável)
+    - Acesso a templates premium
+  - Botão "Plano Atual" ou "Upgrade"
+  - Badge "Popular" no plano Pro
+
+**Plano Atual:**
+- Destacado com borda colorida
+- Mostra "Renovação em X dias"
+
+---
+
+### 7. **Histórico** (`/user/history`)
+
+**Objetivo:** Visualizar histórico de atividades e gerações.
+
+**Funcionalidades:**
+- Tabela com:
+  - Data/Hora
+  - Tipo (Documento criado, IA usada, Pagamento, etc)
+  - Descrição
+  - Palavras consumidas (se aplicável)
+- Filtros:
+  - Tipo de atividade
+  - Período (Hoje, Semana, Mês, Tudo)
+- Paginação
+- Exportar histórico (CSV)
+
+---
+
+### 8. **Configurações** (`/user/settings`)
+
+**Objetivo:** Configurações avançadas.
+
+**Seções:**
+
+**A. API Keys (futuro)**
+- Campo para gerar API key pessoal
+- Documentação de uso
+
+**B. Integrações**
+- Lista de integrações disponíveis:
+  - Google Drive
+  - Dropbox
+  - WordPress
+  - Medium
+- Status: Conectado/Desconectado
+- Botões para conectar/desconectar
+
+**C. Privacidade**
+- Toggles:
+  - Permitir analytics
+  - Compartilhar dados de uso para melhorias
+  - Receber emails promocionais
+
+**D. Exportar Dados**
+- Botão "Exportar Todos os Documentos" (ZIP)
+- Botão "Exportar Dados da Conta" (JSON)
+
+---
+
+### 9. **Pagamento - Seleção** (`/payment/select/:planId`)
+
+**Objetivo:** Escolher método de pagamento.
+
+**Layout:**
+- Resumo do plano escolhido (card no topo)
+- Métodos de pagamento (radio buttons):
+  - 💳 Cartão de Crédito (Stripe)
+  - 🅿️ PayPal
+  - 🔷 PIX (se brasileiro)
+  
+**Formulário dinâmico baseado no método:**
+
+**Stripe:**
+- Nome no cartão
+- Número do cartão (com máscara)
+- Validade (MM/AA)
+- CVV
+- CEP de cobrança
+
+**PayPal:**
+- Botão "Pagar com PayPal" (redireciona)
+
+**PIX:**
+- Gera QR Code
+- Código copiável
+- Status: "Aguardando pagamento..."
+
+---
+
+### 10. **Histórico de Pagamentos** (`/payment/history`)
+
+**Objetivo:** Ver todas as transações.
+
+**Funcionalidades:**
+- Tabela:
+  - Data
+  - ID Transação
+  - Método
+  - Valor
+  - Status (Aprovado, Pendente, Falhou)
+  - Ações (Baixar recibo, Ver detalhes)
+- Filtros:
+  - Status
+  - Período
+  - Método
+- Paginação
+- Total pago (no topo)
+
+---
+
+### 11. **Pagamento Sucesso** (`/payment/success`)
+
+**Layout:**
+```
+          ✅
+   Pagamento Aprovado!
+
+Obrigado pela sua compra.
+Seu plano PRO foi ativado com sucesso.
+
+Detalhes:
+- Plano: Professional
+- Valor: R$ 49,90
+- Válido até: 18/01/2026
+
+[Ir para Dashboard]  [Ver Recibo]
+```
+
+---
+
+### 12. **Pagamento Falha** (`/payment/failed`)
+
+**Layout:**
+```
+          ❌
+   Pagamento Não Aprovado
+
+Não foi possível processar seu pagamento.
+
+Possíveis motivos:
+• Cartão recusado
+• Saldo insuficiente
+• Dados incorretos
+
+[Tentar Novamente]  [Falar com Suporte]
+```
+
+---
+
+## 🔐 Autenticação
+
+### Login (`/login`)
+- Email
+- Senha
+- Checkbox "Lembrar-me"
+- Link "Esqueci minha senha"
+- Botão "Entrar"
+- Link "Criar conta"
+
+### Registro (`/register`)
+- Nome
+- Email
+- Senha
+- Confirmar senha
+- Checkbox "Aceito os termos"
+- Botão "Criar Conta"
+
+### Recuperar Senha (`/forgot-password`)
+- Email
+- Botão "Enviar Link"
+
+### Resetar Senha (`/reset-password/:token`)
+- Nova senha
+- Confirmar senha
+- Botão "Resetar"
+
+---
+
+## 🎨 Componentes Reutilizáveis
+
+### Header
+```jsx
+<Header>
+  - Logo (clicável para dashboard)
+  - Breadcrumb (se aplicável)
+  - Ícones:
+    - Notificações (com badge de contagem)
+    - Ajuda
+  - Avatar do usuário (dropdown):
+    - Ver Perfil
+    - Configurações
+    - Sair
+</Header>
+```
+
+### Sidebar
+```jsx
+<Sidebar>
+  Links:
+  - 📊 Dashboard
+  - 📝 Documentos
+  - 🎨 Templates
+  - 👤 Perfil
+  - ⚙️ Conta
+  - 💎 Planos
+  - 📜 Histórico
+  - 🔧 Configurações
+  
+  Footer:
+  - Uso: 45.000/100.000 palavras
+  - Botão "Upgrade"
+</Sidebar>
+```
+
+### DocumentCard
+```jsx
+<DocumentCard document={doc}>
+  - Ícone de tipo
+  - Nome (editável inline)
+  - Data
+  - Contador de palavras
+  - Status badge
+  - Ícone favorito (toggle)
+  - Menu "..." (dropdown):
+    - Abrir
+    - Renomear
+    - Duplicar
+    - Compartilhar
+    - Deletar
+</DocumentCard>
+```
+
+### PlanCard
+```jsx
+<PlanCard plan={plan}>
+  - Badge "Popular" (se aplicável)
+  - Nome
+  - Preço + duração
+  - Lista de features (com ✓)
+  - Botão CTA
+  - "Mais detalhes" (modal)
+</PlanCard>
+```
+
+### Modals
+
+**NewDocumentModal:**
+```jsx
+- Campo: Nome do documento
+- Select: Template (opcional)
+- Botões: Cancelar | Criar
+```
+
+**ConfirmModal:**
+```jsx
+- Ícone de aviso
+- Título
+- Mensagem
+- Botões: Cancelar | Confirmar (vermelho se destrutivo)
+```
+
+**RenameModal:**
+```jsx
+- Campo: Novo nome
+- Botões: Cancelar | Salvar
+```
+
+---
+
+## 🔌 Services (API Mock)
+
+### authService.js
+```javascript
+export const authService = {
+  login: async (email, password) => {
+    // Mock: retorna token e user
+    return {
+      token: "mock-token-123",
+      user: {
+        id: 1,
+        name: "João Silva",
+        email: "joao@example.com",
+        plan: "pro"
+      }
+    }
+  },
+  
+  register: async (data) => { /* ... */ },
+  logout: async () => { /* ... */ },
+  forgotPassword: async (email) => { /* ... */ },
+  resetPassword: async (token, password) => { /* ... */ }
+}
+```
+
+### documentService.js
+```javascript
+export const documentService = {
+  list: async (filters) => {
+    // Mock: retorna lista de documentos
+  },
+  
+  get: async (id) => {
+    // Mock: retorna documento específico
+  },
+  
+  create: async (data) => { /* ... */ },
+  update: async (id, data) => { /* ... */ },
+  delete: async (id) => { /* ... */ },
+  favorite: async (id) => { /* ... */ },
+  
+  generateAI: async (prompt, options) => {
+    // Mock: simula chamada OpenAI
+    return {
+      text: "Conteúdo gerado pela IA...",
+      wordCount: 150
+    }
+  }
+}
+```
+
+---
+
+## 🎯 Contexts
+
+### AuthContext
+```javascript
+- user: objeto do usuário logado
+- token: JWT token
+- isAuthenticated: boolean
+- isLoading: boolean
+- login(email, password)
+- register(data)
+- logout()
+- updateProfile(data)
+```
+
+### UserContext
+```javascript
+- profile: dados completos do usuário
+- plan: plano atual
+- usage: uso de recursos
+- updateProfile(data)
+- refreshUsage()
+```
+
+### DocumentContext
+```javascript
+- documents: lista de documentos
+- currentDocument: documento em edição
+- isLoading: boolean
+- fetchDocuments(filters)
+- createDocument(data)
+- updateDocument(id, data)
+- deleteDocument(id)
+```
+
+### UIContext
+```javascript
+- alerts: array de alertas
+- modals: objeto de modais abertos
+- sidebarOpen: boolean
+- addAlert(message, type)
+- removeAlert(id)
+- openModal(name, props)
+- closeModal(name)
+- toggleSidebar()
+```
+
+---
+
+## ✅ Validações
+
+### Formulários
+```javascript
+// validators.js
+export const validators = {
+  email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+  
+  password: (value) => value.length >= 8,
+  
+  required: (value) => value && value.trim() !== '',
+  
+  minLength: (min) => (value) => value.length >= min,
+  
+  maxLength: (max) => (value) => value.length <= max
+}
+```
+
+---
+
+## 🎨 Responsividade
+
+**Breakpoints Tailwind:**
+```
+sm: 640px
+md: 768px
+lg: 1024px
+xl: 1280px
+2xl: 1536px
+```
+
+**Mobile (< 768px):**
+- Sidebar vira menu hambúrguer
+- Grid de documentos: 1 coluna
+- Cards de planos: 1 coluna
+- Tabelas: scroll horizontal ou cards
+
+**Tablet (768px - 1024px):**
+- Sidebar fixa ou colapsável
+- Grid: 2 colunas
+- Editor: full width, AI panel como drawer
+
+**Desktop (> 1024px):**
+- Layout completo
+- Sidebar fixa
+- Grid: 3-4 colunas
+- Editor com AI panel fixo
+
+---
+
+## 🚀 Funcionalidades Extras
+
+1. **Dark Mode**
+   - Toggle no header
+   - Salvar preferência no localStorage
+   - Classes Tailwind: `dark:bg-gray-900`
+
+2. **Atalhos de Teclado**
+   - `Ctrl+S`: Salvar documento
+   - `Ctrl+N`: Novo documento
+   - `Ctrl+K`: Buscar
+   - `Esc`: Fechar modal
+
+3. **Drag and Drop**
+   - Reordenar documentos no dashboard
+   - Upload de imagens no editor
+
+4. **Notificações em Tempo Real**
+   - Toast notifications
+   - Auto-hide após 5s
+   - Tipos: success, error, warning, info
+
+5. **Animações**
+   - Transições suaves entre páginas
+   - Hover effects nos cards
+   - Loading skeletons
+   - Progress bars
+
+6. **Acessibilidade**
+   - ARIA labels
+   - Navegação por teclado
+   - Contraste adequado
+   - Focus indicators
+
+---
+
+## 📦 Setup Inicial
+
+**package.json (principais dependências):**
+```json
+{
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "axios": "^1.6.0",
+    "react-hook-form": "^7.48.0",
+    "@tiptap/react": "^2.1.0",
+    "@tiptap/starter-kit": "^2.1.0",
+    "lucide-react": "^0.300.0",
+    "framer-motion": "^10.16.0",
+    "clsx": "^2.0.0",
+    "date-fns": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
+  }
+}
+```
+
+---
+
+## 🎬 Entregáveis
+
+**Por favor, entregue:**
+
+1. ✅ Projeto completo com estrutura de pastas
+2. ✅ Todas as 12+ páginas funcionais
+3. ✅ Todos os componentes reutilizáveis
+4. ✅ Contexts configurados
+5. ✅ Services com dados mock
+6. ✅ Roteamento completo
+7. ✅ Responsividade total
+8. ✅ Validações de formulários
+9. ✅ Loading states
+10. ✅ Error handling
+11. ✅ README.md com instruções de setup
+
+**Não precisa:**
+- ❌ Backend real (use mocks)
+- ❌ Integração real com OpenAI (simule)
+- ❌ Pagamento real (simule)
+- ❌ Testes automatizados (opcional)
+
+---
+
+## 🎯 Prioridades
+
+**Alta:**
+1. Dashboard de documentos
+2. Editor com funcionalidades básicas
+3. Sistema de autenticação (mock)
+4. Perfil e conta do usuário
+5. Visualização de planos
+
+**Média:**
+6. Templates
+7. Histórico
+8. Configurações
+9. Pagamentos (mock)
+
+**Baixa:**
+10. Dark mode
+11. Atalhos de teclado
+12. Animações avançadas
+
+---
+
+## 💡 Observações Finais
+
+- Use componentes funcionais com hooks
+- Prefira Tailwind CSS puro (evite CSS inline)
+- Componentize ao máximo
+- Código limpo e comentado
+- Nomes descritivos de variáveis
+- Organização de imports
+- Tratamento de erros em todas as chamadas
+- Loading states em todas as operações assíncronas
+
+**Comece pelo setup básico (Vite + React + Tailwind), depois implemente:**
+1. Estrutura de pastas
+2. Roteamento
+3. Contexts
+4. Componentes base
+5. Páginas principais
+6. Funcionalidades extras
+
+Boa sorte com o desenvolvimento! 🚀

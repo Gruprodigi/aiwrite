@@ -1,0 +1,748 @@
+# Prompt para Desenvolvimento do WriterAI - Painel de Super Admin
+
+Preciso que você desenvolva o **painel administrativo completo** de uma plataforma SaaS de geração de conteúdo com IA chamada WriterAI. Vamos usar **Node.js, React 18, Vite e Tailwind CSS**.
+
+## 🎯 Objetivo Principal
+
+Criar um painel administrativo robusto e completo para gerenciar todos os aspectos da plataforma: usuários, planos, blog, páginas, transações, configurações, SEO e muito mais.
+
+## 🛠️ Stack Tecnológica
+
+```
+- Frontend: React 18 + Vite
+- Styling: Tailwind CSS + shadcn/ui (opcional)
+- Roteamento: React Router v6
+- State Management: Context API + Hooks
+- Formulários: React Hook Form + Zod (validação)
+- HTTP Client: Axios
+- Tabelas: TanStack Table (React Table v8)
+- Editor de Texto: Tiptap ou Lexical
+- Ícones: Lucide React
+- Gráficos: Recharts ou Chart.js
+- Drag & Drop: dnd-kit
+- Date Picker: react-day-picker
+- Toast/Notifications: react-hot-toast
+```
+
+## 🎨 Design System
+
+### Paleta de Cores Admin
+```
+Primary: #667eea (Roxo)
+Secondary: #764ba2 (Roxo escuro)
+Success: #28a745
+Danger: #f93e3e
+Warning: #ffc107
+Info: #61affe
+Background: #f8f9fa
+Sidebar: #1e293b
+Card: #ffffff
+Border: #e2e8f0
+Text Primary: #1e293b
+Text Secondary: #64748b
+```
+
+### Tipografia
+```
+Font: 'Inter', 'Segoe UI', sans-serif
+H1: 2rem, 700
+H2: 1.5rem, 600
+H3: 1.25rem, 600
+Body: 0.875rem, 400
+Small: 0.75rem, 400
+```
+
+## 📁 Estrutura do Projeto
+
+```
+writerAI-admin/
+├── src/
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── AdminHeader.jsx
+│   │   │   ├── AdminSidebar.jsx
+│   │   │   ├── AdminLayout.jsx
+│   │   │   └── Breadcrumb.jsx
+│   │   ├── forms/
+│   │   │   ├── Input.jsx
+│   │   │   ├── Textarea.jsx
+│   │   │   ├── Select.jsx
+│   │   │   ├── Switch.jsx
+│   │   │   ├── FileUpload.jsx
+│   │   │   ├── ColorPicker.jsx
+│   │   │   └── ImageUpload.jsx
+│   │   ├── tables/
+│   │   │   ├── DataTable.jsx
+│   │   │   ├── TableActions.jsx
+│   │   │   ├── TableFilters.jsx
+│   │   │   └── TablePagination.jsx
+│   │   ├── cards/
+│   │   │   ├── StatCard.jsx
+│   │   │   ├── UserCard.jsx
+│   │   │   ├── TransactionCard.jsx
+│   │   │   └── ActivityCard.jsx
+│   │   ├── modals/
+│   │   │   ├── ConfirmDialog.jsx
+│   │   │   ├── UserFormModal.jsx
+│   │   │   ├── PlanFormModal.jsx
+│   │   │   └── MediaLibraryModal.jsx
+│   │   ├── editors/
+│   │   │   ├── RichTextEditor.jsx
+│   │   │   ├── CodeEditor.jsx
+│   │   │   └── MarkdownEditor.jsx
+│   │   ├── builders/
+│   │   │   ├── MenuBuilder.jsx
+│   │   │   ├── FormBuilder.jsx
+│   │   │   └── EmailTemplateBuilder.jsx
+│   │   ├── charts/
+│   │   │   ├── LineChart.jsx
+│   │   │   ├── BarChart.jsx
+│   │   │   ├── PieChart.jsx
+│   │   │   └── AreaChart.jsx
+│   │   └── common/
+│   │       ├── Badge.jsx
+│   │       ├── Loading.jsx
+│   │       ├── EmptyState.jsx
+│   │       ├── Alert.jsx
+│   │       ├── Tooltip.jsx
+│   │       └── Dropdown.jsx
+│   ├── pages/
+│   │   ├── admin/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── users/
+│   │   │   │   ├── UsersList.jsx
+│   │   │   │   ├── UserCreate.jsx
+│   │   │   │   ├── UserEdit.jsx
+│   │   │   │   └── UserView.jsx
+│   │   │   ├── plans/
+│   │   │   │   ├── PlansList.jsx
+│   │   │   │   ├── PlanCreate.jsx
+│   │   │   │   └── PlanEdit.jsx
+│   │   │   ├── transactions/
+│   │   │   │   ├── TransactionsList.jsx
+│   │   │   │   └── TransactionView.jsx
+│   │   │   ├── blog/
+│   │   │   │   ├── PostsList.jsx
+│   │   │   │   ├── PostCreate.jsx
+│   │   │   │   ├── PostEdit.jsx
+│   │   │   │   ├── Categories.jsx
+│   │   │   │   └── Tags.jsx
+│   │   │   ├── pages/
+│   │   │   │   ├── PagesList.jsx
+│   │   │   │   ├── PageCreate.jsx
+│   │   │   │   └── PageEdit.jsx
+│   │   │   ├── menus/
+│   │   │   │   ├── MenusList.jsx
+│   │   │   │   └── MenuBuilder.jsx
+│   │   │   ├── media/
+│   │   │   │   └── MediaLibrary.jsx
+│   │   │   ├── settings/
+│   │   │   │   ├── General.jsx
+│   │   │   │   ├── SEO.jsx
+│   │   │   │   ├── Email.jsx
+│   │   │   │   ├── Payment.jsx
+│   │   │   │   ├── AI.jsx
+│   │   │   │   ├── Appearance.jsx
+│   │   │   │   └── Advanced.jsx
+│   │   │   ├── languages/
+│   │   │   │   ├── LanguagesList.jsx
+│   │   │   │   └── LanguageEdit.jsx
+│   │   │   ├── templates/
+│   │   │   │   ├── TemplatesList.jsx
+│   │   │   │   ├── TemplateCreate.jsx
+│   │   │   │   └── TemplateEdit.jsx
+│   │   │   ├── analytics/
+│   │   │   │   ├── Overview.jsx
+│   │   │   │   ├── Users.jsx
+│   │   │   │   ├── Revenue.jsx
+│   │   │   │   └── Content.jsx
+│   │   │   └── system/
+│   │   │       ├── Logs.jsx
+│   │   │       ├── Cache.jsx
+│   │   │       ├── Queue.jsx
+│   │   │       └── Backups.jsx
+│   ├── contexts/
+│   │   ├── AdminAuthContext.jsx
+│   │   ├── AdminContext.jsx
+│   │   ├── SettingsContext.jsx
+│   │   └── ThemeContext.jsx
+│   ├── hooks/
+│   │   ├── useAdmin.js
+│   │   ├── useTable.js
+│   │   ├── useFilters.js
+│   │   ├── usePagination.js
+│   │   └── useStats.js
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── adminService.js
+│   │   ├── userService.js
+│   │   ├── planService.js
+│   │   ├── blogService.js
+│   │   ├── pageService.js
+│   │   ├── transactionService.js
+│   │   ├── settingsService.js
+│   │   ├── mediaService.js
+│   │   └── analyticsService.js
+│   ├── utils/
+│   │   ├── validators.js
+│   │   ├── formatters.js
+│   │   ├── constants.js
+│   │   ├── helpers.js
+│   │   └── permissions.js
+│   ├── App.jsx
+│   └── main.jsx
+├── public/
+├── package.json
+├── vite.config.js
+└── tailwind.config.js
+```
+
+## 📄 Páginas Administrativas Detalhadas
+
+---
+
+## 1. 📊 DASHBOARD PRINCIPAL (`/admin/dashboard`)
+
+**Objetivo:** Visão geral completa do sistema com métricas e gráficos.
+
+### Layout:
+```
+┌─────────────────────────────────────────────────────────┐
+│ Header: Logo | Breadcrumb | Notif | Profile             │
+├────────┬────────────────────────────────────────────────┤
+│        │  📊 Dashboard Overview                         │
+│        │                                                 │
+│ Side   │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐         │
+│ bar    │  │ 1.2K │ │ $45K │ │ 892  │ │ 45   │         │
+│        │  │Users │ │ Rev  │ │ Docs │ │Trans │         │
+│        │  └──────┘ └──────┘ └──────┘ └──────┘         │
+│        │                                                 │
+│        │  ┌─────────────────────┬────────────────┐     │
+│        │  │  Revenue Chart      │ Users Growth   │     │
+│        │  │  (Últimos 30 dias)  │ (Line Chart)   │     │
+│        │  │  (Area Chart)       │                │     │
+│        │  └─────────────────────┴────────────────┘     │
+│        │                                                 │
+│        │  ┌─────────────────────┬────────────────┐     │
+│        │  │  Top Plans          │ Recent Trans   │     │
+│        │  │  (Pie Chart)        │ (Table)        │     │
+│        │  └─────────────────────┴────────────────┘     │
+│        │                                                 │
+│        │  ┌──────────────────────────────────────┐     │
+│        │  │  Recent Activities (Timeline)        │     │
+│        │  │  • User João upgraded to Pro         │     │
+│        │  │  • New post published: "IA Tips"     │     │
+│        │  │  • Payment received: $29.90          │     │
+│        │  └──────────────────────────────────────┘     │
+└────────┴─────────────────────────────────────────────┘
+```
+
+### Métricas (Cards no Topo):
+
+**1. Total de Usuários**
+- Número total
+- Crescimento % (comparado ao mês anterior)
+- Gráfico sparkline (mini linha)
+- Cores: verde se cresceu, vermelho se caiu
+
+**2. Receita Total**
+- Valor em moeda (R$, USD)
+- Crescimento % mensal
+- MRR (Monthly Recurring Revenue)
+- Sparkline
+
+**3. Documentos Criados**
+- Total de documentos na plataforma
+- Média por usuário
+- Crescimento
+
+**4. Transações**
+- Total de transações
+- Taxa de sucesso (%)
+- Valor pendente
+
+### Gráficos:
+
+**Revenue Chart (Area Chart):**
+```javascript
+dados: {
+  labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+  datasets: [
+    {
+      label: 'Receita',
+      data: [4000, 3000, 5000, 6000, 8000, 9000]
+    }
+  ]
+}
+```
+
+**Users Growth (Line Chart):**
+- Novos usuários por dia (últimos 30 dias)
+- Usuários ativos vs inativos
+
+**Top Plans (Pie Chart):**
+- Distribuição de usuários por plano
+- Free: 60%, Pro: 30%, Enterprise: 10%
+
+**Recent Transactions (Tabela):**
+| ID | Usuário | Plano | Valor | Status | Data |
+|----|---------|-------|-------|--------|------|
+| #123 | João | Pro | R$49 | ✅ | Hoje |
+| #122 | Maria | Ent | R$99 | ✅ | Ontem |
+
+**Recent Activities (Timeline):**
+- Últimas 10 atividades do sistema
+- Ícones por tipo de ação
+- Timestamp relativo ("há 2 minutos")
+
+### Filtros de Período:
+- Hoje
+- Últimos 7 dias
+- Últimos 30 dias
+- Últimos 3 meses
+- Custom (date range picker)
+
+---
+
+## 2. 👥 GESTÃO DE USUÁRIOS
+
+### 2.1 Lista de Usuários (`/admin/users`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────────────┐
+│ 👥 Usuários                                     │
+│                                                  │
+│ [🔍 Buscar...] [Filtros ▼] [+ Novo Usuário]   │
+│                                                  │
+│ ┌─────────────────────────────────────────────┐│
+│ │ Avatar │ Nome      │ Email │ Plano │ Status ││
+│ ├────────────────────────────────────────────┤ │
+│ │ 👤    │ João Silva│ j@... │ Pro   │ ✅    ││
+│ │ 👤    │ Maria    │ m@... │ Free  │ ✅    ││
+│ │ 👤    │ Pedro    │ p@... │ Ent   │ 🔄    ││
+│ └─────────────────────────────────────────────┘│
+│                                                  │
+│ Mostrando 1-10 de 245  [← 1 2 3 ... 25 →]     │
+└─────────────────────────────────────────────────┘
+```
+
+**Funcionalidades:**
+
+**Tabela com Colunas:**
+- [ ] Checkbox (seleção múltipla)
+- Avatar + Nome
+- Email
+- Plano atual
+- Documentos criados
+- Palavras usadas / Limite
+- Data de registro
+- Status (Ativo, Inativo, Suspenso, Pendente)
+- Ações (Ver, Editar, Deletar)
+
+**Ações em Massa:**
+- Deletar selecionados
+- Suspender selecionados
+- Ativar selecionados
+- Exportar selecionados (CSV)
+- Enviar email em massa
+
+**Filtros Avançados:**
+- Status: Todos, Ativos, Inativos, Suspensos
+- Plano: Todos, Free, Pro, Enterprise
+- Data de registro: Range
+- Palavras usadas: < 50%, 50-90%, > 90%
+- Email verificado: Sim/Não
+- Último login: Últimos 7 dias, 30 dias, etc
+
+**Busca:**
+- Por nome, email ou ID
+- Busca instantânea (debounced)
+
+**Exportação:**
+- CSV completo
+- Excel
+- PDF (relatório)
+
+**Ordenação:**
+- Clicar no header da coluna
+- Ascendente/Descendente
+- Multi-sort (Shift+Click)
+
+---
+
+### 2.2 Criar/Editar Usuário (`/admin/users/create`, `/admin/users/:id/edit`)
+
+**Formulário Completo:**
+
+**Seção 1: Informações Pessoais**
+```
+┌─────────────────────────────────┐
+│ Foto de Perfil                  │
+│ [Upload de imagem]              │
+│                                  │
+│ Nome Completo *                 │
+│ [___________________________]   │
+│                                  │
+│ Email *                         │
+│ [___________________________]   │
+│                                  │
+│ Telefone                        │
+│ [___________________________]   │
+│                                  │
+│ Data de Nascimento              │
+│ [__/__/____]                    │
+│                                  │
+│ Biografia                       │
+│ [___________________________]   │
+│ [___________________________]   │
+└─────────────────────────────────┘
+```
+
+**Seção 2: Conta e Acesso**
+```
+┌─────────────────────────────────┐
+│ Role/Função *                   │
+│ ○ User  ○ Admin                │
+│                                  │
+│ Status da Conta *               │
+│ ○ Ativo  ○ Inativo ○ Suspenso  │
+│                                  │
+│ Email Verificado                │
+│ [✓] Sim                         │
+│                                  │
+│ Senha (deixe vazio p/ manter)   │
+│ [___________________________]   │
+│                                  │
+│ Confirmar Senha                 │
+│ [___________________________]   │
+└─────────────────────────────────┘
+```
+
+**Seção 3: Plano e Limites**
+```
+┌─────────────────────────────────┐
+│ Plano Atual *                   │
+│ [Free          ▼]              │
+│                                  │
+│ Data de Expiração               │
+│ [__/__/____]  [♾️ Nunca expira]│
+│                                  │
+│ Limite de Palavras              │
+│ [10000] palavras/mês            │
+│ [□] Limite customizado          │
+│                                  │
+│ Palavras já usadas (reset mês)  │
+│ 4.580 / 10.000 (45%)            │
+│ [━━━━━━━━━━━━━━━━━━━━━━━━━]   │
+│                                  │
+│ Limite de Documentos            │
+│ [50] documentos                 │
+│ [□] Ilimitado                   │
+└─────────────────────────────────┘
+```
+
+**Seção 4: Preferências**
+```
+┌─────────────────────────────────┐
+│ Idioma Padrão                   │
+│ [Português (BR) ▼]             │
+│                                  │
+│ Timezone                        │
+│ [America/Sao_Paulo ▼]          │
+│                                  │
+│ Notificações                    │
+│ [✓] Email de marketing          │
+│ [✓] Atualizações do produto     │
+│ [ ] Alertas de segurança        │
+└─────────────────────────────────┘
+```
+
+**Seção 5: Dados Customizados (JSON)**
+```
+┌─────────────────────────────────┐
+│ Custom Data (JSON)              │
+│ {                                │
+│   "customerSupport": true,      │
+│   "betaTester": false,          │
+│   "customFields": {}            │
+│ }                                │
+└─────────────────────────────────┘
+```
+
+**Botões:**
+- [Cancelar] [Salvar como Rascunho] [💾 Salvar]
+
+**Validações:**
+- Email único (verificar no backend mock)
+- Senha mínimo 8 caracteres
+- Campos obrigatórios marcados com *
+- Validação em tempo real
+
+---
+
+### 2.3 Visualizar Usuário (`/admin/users/:id`)
+
+**Layout em Tabs:**
+
+**Tab 1: Overview**
+```
+┌────────────────────────────────────────┐
+│ 👤 João Silva                         │
+│ joao@example.com | ID: #1234          │
+│ ✅ Ativo | Plano: Pro                │
+│                                        │
+│ [Editar] [Suspender] [Deletar]       │
+│                                        │
+│ ┌──────────┬──────────┬──────────┐   │
+│ │ 45 Docs  │ 12.5K    │ Membro   │   │
+│ │          │ Palavras │ há 6 meses│   │
+│ └──────────┴──────────┴──────────┘   │
+│                                        │
+│ Informações Pessoais:                 │
+│ • Telefone: +55 11 99999-9999         │
+│ • Cidade: São Paulo, SP               │
+│ • Último login: Há 2 horas            │
+│                                        │
+│ Uso de Recursos:                      │
+│ Palavras: [━━━━━━━━━━━━] 78%        │
+│ Documentos: [━━━━━] 45/50            │
+└────────────────────────────────────────┘
+```
+
+**Tab 2: Documentos**
+- Lista dos documentos do usuário
+- Ordenar por data, palavras, favoritos
+- Buscar documentos
+- Visualizar/Editar/Deletar documentos
+
+**Tab 3: Transações**
+- Histórico de pagamentos
+- Status, valor, método, data
+- Total pago lifetime
+- Filtros por status e período
+
+**Tab 4: Atividades**
+- Log de todas as ações do usuário
+- Timestamps
+- IP addresses
+- User agent
+- Tipo de ação (Login, Documento criado, etc)
+
+**Tab 5: Notas (Admin)**
+- Campo de texto para notas internas
+- Histórico de notas com timestamp
+- Apenas visível para admins
+
+---
+
+## 3. 💎 GESTÃO DE PLANOS
+
+### 3.1 Lista de Planos (`/admin/plans`)
+
+**Layout:**
+```
+┌──────────────────────────────────────────┐
+│ 💎 Planos                                │
+│                                           │
+│ [+ Novo Plano] [Reordenar]              │
+│                                           │
+│ ┌─────────────────────────────────────┐ │
+│ │ 📦 Free                             │ │
+│ │ $0/mês • 10K palavras               │ │
+│ │ Status: ✅ Aprovado • 1.245 usuários│ │
+│ │ [Editar] [Duplicar] [Deletar]       │ │
+│ └─────────────────────────────────────┘ │
+│                                           │
+│ ┌─────────────────────────────────────┐ │
+│ │ ⭐ Professional                     │ │
+│ │ $49/mês • 100K palavras             │ │
+│ │ Status: ✅ Aprovado • 456 usuários  │ │
+│ │ Badge: "Popular"                    │ │
+│ │ [Editar] [Duplicar] [Deletar]       │ │
+│ └─────────────────────────────────────┘ │
+│                                           │
+│ ┌─────────────────────────────────────┐ │
+│ │ 🚀 Enterprise                       │ │
+│ │ $99/mês • Ilimitado                 │ │
+│ │ Status: ✅ Aprovado • 89 usuários   │ │
+│ │ [Editar] [Duplicar] [Deletar]       │ │
+│ └─────────────────────────────────────┘ │
+└──────────────────────────────────────────┘
+```
+
+**Funcionalidades:**
+- Drag & Drop para reordenar
+- Status: Aprovado, Rascunho, Arquivado
+- Contador de usuários por plano
+- Duplicar plano (criar similar)
+- Arquivar (não deletar, apenas esconder)
+
+---
+
+### 3.2 Criar/Editar Plano (`/admin/plans/create`, `/admin/plans/:id/edit`)
+
+**Formulário Completo:**
+
+**Seção 1: Informações Básicas**
+```
+┌─────────────────────────────────┐
+│ Nome do Plano *                 │
+│ [Professional Plan_________]    │
+│                                  │
+│ Slug (URL amigável) *           │
+│ [professional-plan_________]    │
+│ Auto-gerado, editável           │
+│                                  │
+│ Descrição Curta                 │
+│ [Ideal para profissionais...]   │
+│                                  │
+│ Ícone/Emoji                     │
+│ [⭐] (opcional)                 │
+└─────────────────────────────────┘
+```
+
+**Seção 2: Preço e Duração**
+```
+┌─────────────────────────────────┐
+│ Preço *                         │
+│ R$ [49.90________________]      │
+│                                  │
+│ Tipo de Duração *               │
+│ ○ Mensal  ○ Anual              │
+│                                  │
+│ Desconto para Anual (%)         │
+│ [20_____] %                     │
+│ Preço anual: R$ 479,04          │
+│ (equivale a R$ 39,92/mês)       │
+│                                  │
+│ Período de Trial (dias)         │
+│ [14_____] dias                  │
+│ [ ] Sem trial                   │
+└─────────────────────────────────┘
+```
+
+**Seção 3: Limites e Recursos**
+```
+┌─────────────────────────────────┐
+│ Limite de Palavras *            │
+│ [100000_____________] palavras/mês│
+│ [□] Ilimitado                   │
+│                                  │
+│ Limite de Documentos            │
+│ [50_________________] documentos│
+│ [□] Ilimitado                   │
+│                                  │
+│ Gerações de IA por mês          │
+│ [500________________] gerações  │
+│ [□] Ilimitado                   │
+│                                  │
+│ Limite de Uploads (MB)          │
+│ [100________________] MB        │
+└─────────────────────────────────┘
+```
+
+**Seção 4: Features (Checklist)**
+```
+┌─────────────────────────────────┐
+│ Features Incluídas              │
+│                                  │
+│ [✓] Acesso a todos templates    │
+│ [✓] Editor avançado             │
+│ [✓] Exportar documentos         │
+│ [✓] Suporte por email           │
+│ [ ] Suporte prioritário         │
+│ [ ] API Access                  │
+│ [ ] White label                 │
+│ [ ] Custom integrations         │
+│                                  │
+│ [+ Adicionar Feature Custom]    │
+└─────────────────────────────────┘
+```
+
+**Seção 5: Aparência**
+```
+┌─────────────────────────────────┐
+│ Badge/Etiqueta                  │
+│ [Popular        ▼]              │
+│ Opções: Popular, Recomendado,   │
+│         Mais Vendido, null      │
+│                                  │
+│ Cor do Badge                    │
+│ [#667eea] 🎨                    │
+│                                  │
+│ Destacar este plano             │
+│ [✓] Sim (aparece com destaque)  │
+└─────────────────────────────────┘
+```
+
+**Seção 6: Configurações Avançadas**
+```
+┌─────────────────────────────────┐
+│ Status *                        │
+│ ○ Aprovado  ○ Rascunho          │
+│                                  │
+│ Visibilidade                    │
+│ [✓] Mostrar na página de preços │
+│ [✓] Disponível para compra      │
+│ [ ] Somente por convite         │
+│                                  │
+│ Ordem de Exibição               │
+│ [2_____] (menor = primeiro)     │
+│                                  │
+│ Data de Lançamento (opcional)   │
+│ [__/__/____]                    │
+└─────────────────────────────────┘
+```
+
+**Seção 7: Dados Customizados (JSON)**
+```
+┌─────────────────────────────────┐
+│ Custom Data (JSON)              │
+│ {                                │
+│   "features": {                  │
+│     "aiModels": ["gpt-4"],      │
+│     "maxTeamMembers": 5         │
+│   }                              │
+│ }                                │
+└─────────────────────────────────┘
+```
+
+**Preview do Card:**
+```
+┌─────────────────────┐
+│ 🏆 POPULAR          │
+│ Professional        │
+│ R$ 49,90/mês        │
+│                     │
+│ ✓ 100K palavras     │
+│ ✓ 50 documentos     │
+│ ✓ Suporte email     │
+│ ✓ Todos templates   │
+│                     │
+│ [Escolher Plano]    │
+└─────────────────────┘
+```
+
+**Botões:**
+- [Cancelar] [Visualizar] [💾 Salvar]
+
+---
+
+## 4. 💳 GESTÃO DE TRANSAÇÕES
+
+### 4.1 Lista de Transações (`/admin/transactions`)
+
+**Layout:**
+```
+┌─────────────────────────────────────────────────────┐
+│ 💳 Transações                                       │
+│                                                      │
+│ [🔍 ID, Email...] [Filtros ▼] [📊 Relatórios]     │
+│                                                      │
+│ Resumo: Total: R$ 45.890 | Aprovadas: R$ 43.200   │
+│                                                      │
+│ ┌──────────────────────────────────────────────┐  │
+│ │ID │Usuário│Plano │Valor│Método │Status│Data │  │
+│ ├──────────────────────────────────────────────┤  │
+│ │#123│João  │Pro  │R$49│Stripe│✅
